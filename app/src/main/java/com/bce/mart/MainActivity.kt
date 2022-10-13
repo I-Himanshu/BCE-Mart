@@ -1,4 +1,5 @@
-package com.google.bcemart
+package com.bce.mart
+
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,12 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.bcemart.ui.theme.BCEMartTheme
+import com.bce.mart.ui.theme.BCEMartTheme
 import kotlinx.coroutines.launch
 
 data class Laptop(
@@ -258,7 +257,6 @@ fun ShowAllLaptop() {
 
 @Composable
 fun ShowFavoriteLaptops() {
-    val context = LocalContext.current
     var totalPrice:Int = 0
     Column(modifier = Modifier
         .padding(horizontal = 10.dp)
@@ -270,7 +268,7 @@ fun ShowFavoriteLaptops() {
             }
         }
         if(totalPrice>0){
-            Text("Total Price: ${totalPrice.toString()}", style = MaterialTheme.typography.h4, color = Color.DarkGray)
+            Text("Total Price: ${totalPrice}", style = MaterialTheme.typography.h4, color = Color.DarkGray)
 
             Button(onClick = {}, modifier = Modifier
                 .fillMaxWidth()
@@ -283,6 +281,10 @@ fun ShowFavoriteLaptops() {
                     )
                     Text(text = "Purchase All")
                 }
+            }
+        }else{
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                Text("Your favorite list is empty",style=MaterialTheme.typography.h3, textAlign = TextAlign.Center)
             }
         }
         Spacer(modifier = Modifier.height(80. dp))
@@ -330,7 +332,8 @@ fun LaptopUI(laptop: Laptop) {
             }
 
             Text(laptop.name, style = MaterialTheme.typography.h5, textAlign = TextAlign.Center)
-            Text("₹${laptop.price.toString()}", style = MaterialTheme.typography.h5, color = Color.DarkGray)
+            Text("₹${laptop.price}", style = MaterialTheme.typography.h5,
+                color = MaterialTheme.colors.secondary)
             Spacer(modifier = Modifier.height(20. dp))
 
             if (isExpended) {

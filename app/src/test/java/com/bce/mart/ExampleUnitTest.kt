@@ -1,4 +1,4 @@
-package com.google.bcemart
+package com.bce.mart
 
 import org.junit.Test
 

@@ -1,4 +1,4 @@
-package com.google.bcemart.ui.theme
+package com.bce.mart.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
