@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -14,10 +16,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bce.mart.ui.theme.BCEMartTheme
@@ -151,10 +153,7 @@ fun Main() {
             } else if (selectedIndex.value == 1) {
                 ShowFavoriteLaptops()
             } else {
-//                ShowFavoriteLaptops()
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    Text("This Page Is Under Maintenance",style=MaterialTheme.typography.h3, textAlign = TextAlign.Center)
-                }
+                ProfilePage()
             }
         },
         bottomBar = {
@@ -166,87 +165,40 @@ fun Main() {
     )
 }
 
-@Composable
-fun DrawerContent() {
-    Column( modifier = Modifier.padding(10.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically){
-            Image(painter = painterResource(id = R.drawable.bce_logo), contentDescription = "Bce Bakhtiyarpur Logo", modifier = Modifier.height(100.dp))
-            Spacer(modifier = Modifier.width(33.dp))
-            Text("BCE Mart", style = MaterialTheme.typography.h4, color = Color.Magenta, fontWeight = FontWeight.ExtraBold)
-        }
-
-        Button(onClick = {}, modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.Home,
-                    contentDescription = "Home",
-                    tint = Color.White
-                )
-                Text(text = " Home")
-            }
-        }
-
-        Button(onClick = {}, modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Color.White
-                )
-                Text(text = " Favorite")
-            }
-        }
-
-        Button(onClick = {}, modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Purchase All",
-                    tint = Color.White
-                )
-                Text(text = "Go To Cart")
-            }
-        }
-
-        Button(onClick = {}, modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "Login",
-                    tint = Color.White
-                )
-                Text(text = " Login")
-            }
-        }
-        Button(onClick = {}, modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.End)) {
-            Row {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    tint = Color.White
-                )
-                Text(text = " Settings")
-            }
-        }
-    }
-}
 
 
 @Composable
 fun ShowAllLaptop() {
+    var value by remember {mutableStateOf(TextFieldValue(""))}
+
     Column(modifier = Modifier
         .padding(horizontal = 10.dp)
         .verticalScroll(rememberScrollState())) {
+        Spacer(modifier = Modifier.height(10.dp))
+        BasicTextField(
+            value = value,
+            onValueChange = {value = it},
+            decorationBox = {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Color.LightGray,
+                        RoundedCornerShape(percent = 30)
+                    )
+                    .padding(18.dp)) {
+                        if (value.text.isEmpty()) {
+                            Text("Search Products....")
+                        }
+                        it()
+                        Spacer(modifier = Modifier.width(70.dp))
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.secondary
+                        )
+                }
+            }
+        )
         for (laptop in LaptopArray) {
             LaptopUI(laptop = laptop)
         }
@@ -288,69 +240,6 @@ fun ShowFavoriteLaptops() {
             }
         }
         Spacer(modifier = Modifier.height(80. dp))
-    }
-}
-
-@Composable
-fun LaptopUI(laptop: Laptop) {
-    var isExpended by remember {
-        mutableStateOf(false)
-    }
-    var isFavorite by remember {
-        mutableStateOf(laptop.isFav)
-    }
-
-    Spacer(modifier = Modifier.height(10. dp))
-    Card(modifier = Modifier
-        .padding(all = 20. dp), elevation = 18. dp) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 20.dp, horizontal = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-
-            Box(contentAlignment = Alignment.TopEnd) {
-                Image(
-                    painter = painterResource(id = laptop.Img), contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-
-                IconToggleButton(
-                    checked = isFavorite,
-                    onCheckedChange = {
-                        isFavorite = !isFavorite
-                        laptop.isFav = isFavorite
-                    }
-                ) {
-                    Icon(
-                        tint = Color.Red,
-                        imageVector =
-                        if (isFavorite) Icons.Filled.Favorite
-                        else Icons.Default.FavoriteBorder,
-                        contentDescription = null
-                    )
-                }
-            }
-
-            Text(laptop.name, style = MaterialTheme.typography.h5, textAlign = TextAlign.Center)
-            Text("₹${laptop.price}", style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.secondary)
-            Spacer(modifier = Modifier.height(20. dp))
-
-            if (isExpended) {
-                Text(laptop.desc, style = MaterialTheme.typography.body2)
-                Button(onClick = {
-                    isExpended = !isExpended
-                }, colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error)) {
-                    Text("Show Less")
-                }
-            } else {
-                Button(onClick = {
-                    isExpended = !isExpended
-                }) {
-                    Text("View More")
-                }
-            }
-        }
     }
 }
 
