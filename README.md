@@ -39,7 +39,7 @@ Profile section is also very user friendly, And there is a drawer which open and
 #
 #
 # Application Link & Future Scope
-[LINK TO DOWNLOAD](https://drive.google.com/uc?export=view&id=12oXRJHW8YX4SMnDj_vCzkuDIlR1JqeIa)  
+[LINK TO DOWNLOAD](https://drive.google.com/file/d/12oXRJHW8YX4SMnDj_vCzkuDIlR1JqeIa/view) 
 ### In Future I Have Planned Some Extra Functionality, Some of them are as follows
 * Add Authentical With Firebase
 * Payment Gateway with UPI
